@@ -1,0 +1,20 @@
+DOMAIN:443 {
+bind 127.0.0.1
+root WEB_DIR
+gzip
+index index.html
+forwardproxy {
+        basicauth       PROXY_USER      PROXY_PASS
+}
+tls /etc/v2ray/v2ray.crt /etc/v2ray/v2ray.key
+}
+debian.org:443 {
+bind 127.0.0.1
+tls /etc/v2ray/v2ray.crt /etc/v2ray/v2ray.key
+proxy / localhost:9999 {
+        websocket
+        header_upstream Connection {>Connection}
+        header_upstream Upgrade {>Upgrade}
+        header_upstream Host "DOMAIN"
+  }
+}
