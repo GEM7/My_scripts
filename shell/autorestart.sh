@@ -4,7 +4,7 @@
 PID_MEM_MAX="85"
 
 # 设置最大系统负载
-SYS_LOAD_MAX="4"
+SYS_LOAD_MAX="3"
 
 # 设置需要监控的服务名称
 NAME_LIST="caddy v2ray"
