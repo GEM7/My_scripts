@@ -19,16 +19,25 @@ ISP=(
     "Ali"
 )
 
-if [ $( cat ${RESULT} | grep `date +%y.%m.%d` | wc -c ) -eq 0 ];then
-printf "Date:\t`date +%y.%m.%d`" >> ${RESULT}
-printf "-----------------------" >> ${RESULT}
+if [ -f ${RESULT} ];then
+    if [ $( cat ${RESULT} | grep `date +%y.%m.%d` | wc -c ) -eq 0 ];then
+        printf "Date:\t`date +%y.%m.%d`\n" >> ${RESULT}
+        printf "=======================\n" >> ${RESULT}
+    else
+        exit 0;
+    fi
+else
+    printf "Date:\t`date +%y.%m.%d`\n" >> ${RESULT}
+    printf "=======================\n" >> ${RESULT}
 fi
+
+
 
 for i in ${!IP[@]};do
     if [ `mtr -nTr ${IP[i]} | grep "59.43" |wc -c` -ne 0 ];then
-        printf "${ISP[i]}:\tON\tCN2\n" >> ${RESULT}
+        printf "%-6s | %-6s | %-6s\n" "${ISP[i]}" "ON" "CN2 " >> ${RESULT}
     else
-        printf "${ISP[i]}:\tOFF\tCN2\n" >> ${RESULT}
+        printf "%-6s | %-6s | %-6s\n" "${ISP[i]}" "OFF" "CN2 " >> ${RESULT}
     fi
 done
 
