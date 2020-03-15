@@ -19,19 +19,19 @@ ISP=(
     "Ali"
 )
 
+[[ `command -v mtr` ]] && echo "";|| apt-get install -y mtr;
+
 if [ -f ${RESULT} ];then
     if [ $( cat ${RESULT} | grep `date +%y.%m.%d` | wc -c ) -eq 0 ];then
         printf "Date:\t`date +%y.%m.%d`\n" >> ${RESULT}
-        printf "=======================\n" >> ${RESULT}
+        printf "=====================\n" >> ${RESULT}
     else
         exit 0;
     fi
 else
     printf "Date:\t`date +%y.%m.%d`\n" >> ${RESULT}
-    printf "=======================\n" >> ${RESULT}
+    printf "=====================\n" >> ${RESULT}
 fi
-
-
 
 for i in ${!IP[@]};do
     if [ `mtr -nTr ${IP[i]} | grep "59.43" |wc -c` -ne 0 ];then
