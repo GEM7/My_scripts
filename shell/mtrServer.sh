@@ -19,7 +19,11 @@ ISP=(
     "Ali"
 )
 
-[[ `command -v mtr` ]] && echo "";|| apt-get install -y mtr;
+[[ `command -v mtr` ]] && echo "mtr already installed" || apt-get install -y mtr
+if [[ $(crontab -l | egrep -v "^(#|$)" | grep -q 'bash /root/mtrr/mtrServer.sh'; echo $?) == 1 ]]
+then
+    echo $(crontab -l ; echo '0 12 * * * bash /root/mtrr/mtrServer.sh') | crontab -
+fi
 
 if [ -f ${RESULT} ];then
     if [ $( cat ${RESULT} | grep `date +%y.%m.%d` | wc -c ) -eq 0 ];then
