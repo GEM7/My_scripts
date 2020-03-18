@@ -1,0 +1,34 @@
+DOMAIN_1.DOMAIN:443 {
+bind 127.0.0.1
+root /var/www/html
+gzip
+index index.html
+#forwardproxy {
+#        basicauth       PROXY_USER      PROXY_PASS
+#}
+tls /etc/domain_1_tls.crt /etc/domain_1_tls.key
+}
+debian.org:443 {
+bind 127.0.0.1
+tls /etc/domain_1_tls.crt /etc/domain_1_tls.key
+proxy / localhost:9999 {
+        websocket
+        header_upstream Connection {>Connection}
+        header_upstream Upgrade {>Upgrade}
+        header_upstream Host "DOMAIN_1.DOMAIN"
+  }
+}
+DOMAIN_2.DOMAIN:443 {
+bind 127.0.0.1
+root /var/www/html
+gzip
+index index.html
+tls /etc/domain_2_tls.crt /etc/domain_2_tls.key
+}
+LB_DOMAIN.DOMAIN:443 {
+bind 127.0.0.1
+root /var/www/html
+gzip
+index index.html
+tls /etc/lb_tls.crt /etc/lb_tls.key
+}
